@@ -1,0 +1,39 @@
+blueprint:
+  name: High energy price, Turn off SmartThingDevice
+  description: 'This automation blueprint turns on and off a smarthing device when high energy price.'
+  domain: automation
+  input:
+    energy_sensor:
+      name: Tibber price sensor
+      selector:
+        entity:
+          integration: tibber
+          domain: sensor
+      default: ''
+    target_AC:
+      name: Device to Turn Off
+      description: Test
+      selector:
+        target:
+          entity:
+            integration: SmartThings
+              domain: climate
+     
+mode: single
+max_exceeded: silent
+variables:
+  energy_sensor: !input 'energy_sensor'
+  energy_sensor_state: '{{ float(states[energy_sensor].state)}}'
+  energy_sensor_max: '{{ float(states[energy_sensor].attributes[''max_price''])}}'
+trigger:
+  platform: state
+  entity_id: !input 'energy_sensor'
+condition:
+  condition: template
+  value_template: '{{energy_sensor_state > 0.9 * energy_sensor_max}}'
+action:
+  - service: 
+  - entity_id: !input AC
+    domain: climate
+    data:
+       hvac_mode: 'off'
