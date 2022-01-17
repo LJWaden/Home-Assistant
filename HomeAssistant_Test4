@@ -32,6 +32,4 @@ condition:
   value_template: '{{energy_sensor_state > 0.9 * energy_sensor_max}}'
 action:
   - service: climate.turn_off
-  target:
-      entity_id: !input climate_entity
-    
+  target: !input climate_entity
