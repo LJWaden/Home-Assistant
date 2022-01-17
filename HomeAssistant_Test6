@@ -13,7 +13,6 @@ blueprint:
     climate_entity:
       name: Device to Turn Off
       selector:
-        target:
           entity:
             domain: climate
                    
