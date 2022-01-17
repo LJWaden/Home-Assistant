@@ -12,7 +12,6 @@ blueprint:
       default: ''
     climate_entity:
       name: Device to Turn Off
-      description: Test
       selector:
         target:
           entity:
@@ -31,5 +30,8 @@ condition:
   condition: template
   value_template: '{{energy_sensor_state > 0.9 * energy_sensor_max}}'
 action:
-  - service: climate.turn_off
-  target: !input climate_entity
+  - service: climate.set_temperature
+    target: 
+      entity_id: !input climate_entity
+    data:
+        hvac_mode: 'off'
