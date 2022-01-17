@@ -10,7 +10,7 @@ blueprint:
           integration: tibber
           domain: sensor
       default: ''
-    target_entity:
+    climate_entity:
       name: Device to Turn Off
       description: Test
       selector:
@@ -32,5 +32,6 @@ condition:
   value_template: '{{energy_sensor_state > 0.9 * energy_sensor_max}}'
 action:
   - service: climate.turn_off
-    entity_id: !input target_entity
-    domain: climate
+  target:
+      entity_id: !input climate_entity
+    
