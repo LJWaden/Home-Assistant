@@ -31,7 +31,6 @@ condition:
   condition: template
   value_template: '{{energy_sensor_state > 0.9 * energy_sensor_max}}'
 action:
-  - service: climate.set_temperature
+  - service: climate.turn_off
     entity_id: !input target_entity
-    data:
-       hvac_mode: 'off'
+    domain: climate
