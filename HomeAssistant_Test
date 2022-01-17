@@ -17,8 +17,7 @@ blueprint:
         target:
           entity:
             integration: SmartThings
-              domain: climate
-     
+                   
 mode: single
 max_exceeded: silent
 variables:
