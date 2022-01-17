@@ -32,7 +32,7 @@ condition:
   value_template: '{{energy_sensor_state > 0.9 * energy_sensor_max}}'
 action:
   - service: 
-  - entity_id: !input AC
+  - entity_id: !input target_AC
     domain: climate
     data:
        hvac_mode: 'off'
