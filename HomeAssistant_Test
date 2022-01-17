@@ -1,5 +1,5 @@
 blueprint:
-  name: High energy price, Turn off SmartThingDevice
+  name: High energy price, Turn off SmartThingDevice2
   description: 'This automation blueprint turns on and off a smarthing device when high energy price.'
   domain: automation
   input:
