@@ -16,7 +16,6 @@ blueprint:
       selector:
         target:
           entity:
-            integration: SmartThings
             domain: climate
                    
 mode: single
