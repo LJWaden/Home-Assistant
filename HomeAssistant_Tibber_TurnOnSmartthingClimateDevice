@@ -1,6 +1,6 @@
 blueprint:
-  name: High energy price, Turn off SmartThingDevice
-  description: 'This automation blueprint turns on and off a smarthing device when high energy price.'
+  name: Tibber normal to low prices, Turn on SmartThingDevice
+  description: 'This automation blueprint turns on smarthing climate device when energy price is normal.'
   domain: automation
   input:
     energy_sensor:
@@ -11,7 +11,7 @@ blueprint:
           domain: sensor
       default: ''
     climate_entity:
-      name: Device to Turn Off
+      name: Device to Turn On
       selector:
           entity:
             domain: climate
@@ -27,8 +27,8 @@ trigger:
   entity_id: !input 'energy_sensor'
 condition:
   condition: template
-  value_template: '{{energy_sensor_state > 0.9 * energy_sensor_max}}'
+  value_template: '{{energy_sensor_state < 0.9 * energy_sensor_max}}'
 action:
-  - service: climate.turn_off
+  - service: climate.turn_on
     target: 
       entity_id: !input climate_entity
