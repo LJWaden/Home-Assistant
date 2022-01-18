@@ -21,8 +21,7 @@ blueprint:
           entity:
             domain: sensor
     max_temperature_entity:
-      name: Max Temperature
-         default: 15
+      name: Temperature maximum
          selector:
          number:
          mode: box                
