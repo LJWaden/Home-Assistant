@@ -26,21 +26,19 @@ max_exceeded: silent
 variables:
   energy_sensor: !input 'energy_sensor'
   energy_sensor_state: '{{ float(states[energy_sensor].state)}}'
-  energy_sensor_max: '{{ float(states[energy_sensor].attributes[''max_price''])}}'
+  energy_sensor_avg: '{{ float(states[energy_sensor].attributes[''avg_price''])}}'
   temperature_sensor: !input 'temperature_sensor'
-  temperature_sensor_temperature: '{{ float(states[temperature_sensor].state)}}'
+  temperature_sensor_state: '{{ float(states[temperature_sensor].state)}}'
   
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
 condition:
-  condition: template
-  value_template: '{{energy_sensor_state < 0.7 * energy_sensor_max}}'
-  condition: numeric_state
-  entity_id: !input temperature_sensor
-  above: 0
-  below: 20
-
+- condition: template
+  value_template: '{{energy_sensor_state < 1.0 * energy_sensor_avg}}'
+- condition: template
+  value_template: '{{19.0 > temperature_sensor_state}}'
+  
 action:
   - service: climate.turn_on
     target: 
