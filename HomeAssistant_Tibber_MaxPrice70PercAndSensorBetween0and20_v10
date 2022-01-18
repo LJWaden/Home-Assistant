@@ -20,10 +20,8 @@ blueprint:
       selector:
           entity:
             domain: sensor
-    max_temperature_entity:
+    temperature_entity:
       name: Temperature maximum
-         number:
-         mode: box                
 
 mode: single
 max_exceeded: silent
@@ -33,7 +31,7 @@ variables:
   energy_sensor_avg: '{{ float(states[energy_sensor].attributes[''avg_price''])}}'
   temperature_sensor: !input 'temperature_sensor'
   temperature_sensor_state: '{{ float(states[temperature_sensor].state)}}'
-  max_temperature_entity: !input 'max_temperature_entity'
+  max_temperature_entity: !input 'temperature_entity'
   max_temperature: '{{ float(states[max_temperature_state].state)}}'
 
 trigger:
