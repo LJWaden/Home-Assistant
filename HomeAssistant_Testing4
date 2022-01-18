@@ -19,6 +19,7 @@ blueprint:
       name: Sensor to Have Conditions On
       selector:
           entity:
+            integration: Telldus Live
             domain: sensor
       
 mode: single
