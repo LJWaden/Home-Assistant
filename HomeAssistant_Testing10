@@ -15,7 +15,7 @@ blueprint:
       selector:
           entity:
             domain: climate
-    temperature_entity:
+    temperature_sensor:
       name: Device to Monitor temperature
       selector:
           entity:
@@ -27,6 +27,7 @@ variables:
   energy_sensor: !input 'energy_sensor'
   energy_sensor_state: '{{ float(states[energy_sensor].state)}}'
   energy_sensor_avg: '{{ float(states[energy_sensor].attributes[''avg_price''])}}'
+  temperature_sensor: !input 'temperature_sensor'
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
