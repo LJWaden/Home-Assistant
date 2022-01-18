@@ -1,6 +1,6 @@
 blueprint:
-  name: Tibber normal to low prices, AVG price Turn on SmartThingDevice
-  description: 'This automation blueprint turns on smarthing climate device when energy price is normal.'
+  name: Tibber normal to low prices, AVG price Turn off SmartThingDevice
+  description: 'This automation blueprint turns off smarthing climate device when energy price is normal.'
   domain: automation
   input:
     energy_sensor:
@@ -11,39 +11,29 @@ blueprint:
           domain: sensor
       default: ''
     climate_entity:
-      name: Device to Turn On
+      name: Device to Turn Off
       selector:
           entity:
             domain: climate
-     sensor_entity:
-      name: Sensor to Have Conditions On
-      selector:
-          entity:
-            integration: Telldus Live
-            domain: sensor
-      
+     temperature_entity:
+        name: Temperature
+        selector:
+        entity:
+          domain: sensor
+      default: ''
 mode: single
 max_exceeded: silent
 variables:
   energy_sensor: !input 'energy_sensor'
   energy_sensor_state: '{{ float(states[energy_sensor].state)}}'
-  energy_sensor_avg: '{{ float(states[energy_sensor].attributes[''avg_price''])}}'
+  energy_sensor_max: '{{ float(states[energy_sensor].attributes[''max_price''])}}'
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
 condition:
-alias:"Between -20 and 19 degress"
-- condition: template
-condition: and
-conditions:
-  condition: numeric_state
-  entity_id: energy_sensor
-  value_template: '{{energy_sensor_state < energy_sensor_avg}}'
-- condition: numeric_state 
-  entity_id: !input sensor_entity
-    above: -20
-    below: 19
+  condition: template
+  value_template: '{{energy_sensor_state > 0.8 * energy_sensor_max}}'
 action:
-  - service: climate.turn_on
+  - service: climate.turn_off
     target: 
       entity_id: !input climate_entity
