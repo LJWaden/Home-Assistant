@@ -1,0 +1,47 @@
+blueprint:
+  name: Tibber , max price Turn on SmartThingDevice
+  description: 'This automation blueprint turns off smarthing climate device when energy price is higher than 70 procent and temperature sensor between 0 and 20 degress.'
+  domain: automation
+  input:
+    energy_sensor:
+      name: Tibber price sensor
+      selector:
+        entity:
+          integration: tibber
+          domain: sensor
+      default: ''
+    climate_entity:
+      name: Device to Turn On
+      selector:
+          entity:
+            domain: climate
+    temperature_sensor:
+      name: Device to Monitor temperature
+      selector:
+          entity:
+            domain: sensor
+
+mode: single
+max_exceeded: silent
+variables:
+  energy_sensor: !input 'energy_sensor'
+  energy_sensor_state: '{{ float(states[energy_sensor].state)}}'
+  energy_sensor_max: '{{ float(states[energy_sensor].attributes[''max_price''])}}'
+  temperature_sensor: !input 'temperature_sensor'
+  temperature_sensor_temperature: '{{ float(states[temperature_sensor].state)}}'
+  
+trigger:
+  platform: state
+  entity_id: !input 'energy_sensor'
+condition:
+  condition: template
+  value_template: '{{energy_sensor_state < 0.7 * energy_sensor_max}}'
+  condition: numeric_state
+  entity_id: !input temperature_sensor
+  above: input_number.temperature_threshold_high
+  below: input_number.temperature_threshold_low
+
+action:
+  - service: climate.turn_on
+    target: 
+      entity_id: !input climate_entity
