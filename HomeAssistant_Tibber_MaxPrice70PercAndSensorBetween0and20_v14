@@ -32,7 +32,7 @@ variables:
   temperature_sensor: !input 'temperature_sensor'
   temperature_sensor_state: '{{ float(states[temperature_sensor].state)}}'
   max_temperature_entity: !input 'temperature_entity'
-  max_temperature: "{{ states[input_number_variable].state | float }}"
+  max_temperature: '{{ float(input_number_variable]) }}'
 
 trigger:
   platform: state
