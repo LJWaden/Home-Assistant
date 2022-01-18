@@ -20,30 +20,27 @@ blueprint:
       selector:
           entity:
             domain: sensor
-    temperature_number:
-      name: Temperature Number
-      selector:
-          number:
-          min: 0
-          max: 35
-          step: 1
-          unit_of_measurment: sec
-          mode: slider
+
 mode: single
 max_exceeded: silent
 variables:
   energy_sensor: !input 'energy_sensor'
   energy_sensor_state: '{{ float(states[energy_sensor].state)}}'
-  energy_sensor_avg: '{{ float(states[energy_sensor].attributes[''avg_price''])}}'
+  energy_sensor_max: '{{ float(states[energy_sensor].attributes[''max_price''])}}'
   temperature_sensor: !input 'temperature_sensor'
   temperature_sensor_temperature: '{{ float(states[temperature_sensor].state)}}'
-  temperature_number: !input 'temperature_number'
+  
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
 condition:
   condition: template
-  value_template: '{{energy_sensor_state < energy_sensor_avg}}'
+  value_template: '{{energy_sensor_state < 0.7 * energy_sensor_max}}'
+  condition: numeric_state
+  entity_id: !input temperature_sensor
+  above: 0
+  below: 20
+
 action:
   - service: climate.turn_on
     target: 
