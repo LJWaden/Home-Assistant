@@ -1,6 +1,6 @@
 blueprint:
   name: Tibber , max price Turn on SmartThingDevice
-  description: 'This automation blueprint turns on smarthing climate device when energy price is normal.'
+  description: 'This automation blueprint turns on smarthing climate device when energy price is lower than certain procent.'
   domain: automation
   input:
     energy_sensor:
@@ -20,6 +20,13 @@ blueprint:
       selector:
           entity:
             domain: sensor
+    input_number:
+      slider1:
+      name: Slider
+      initial: 20.0
+      min: -20.0
+      max: 35.0
+      step: 1        
 
 mode: single
 max_exceeded: silent
@@ -29,6 +36,8 @@ variables:
   energy_sensor_avg: '{{ float(states[energy_sensor].attributes[''avg_price''])}}'
   temperature_sensor: !input 'temperature_sensor'
   temperature_sensor_temperature: '{{ float(states[temperature_sensor].state)}}'
+  input_number: !input 'input_number'
+  
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
