@@ -22,7 +22,6 @@ blueprint:
             domain: sensor
     max_temperature_entity:
       name: Temperature maximum
-         selector:
          number:
          mode: box                
 
