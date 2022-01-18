@@ -37,7 +37,7 @@ variables:
   energy_sensor_max: '{{ float(states[energy_sensor].attributes[''max_price''])}}'
   temperature_sensor: !input 'temperature_sensor'
   temperature_sensor_temperature: '{{ float(states[temperature_sensor].state)}}'
-  input_number: "{{ states('input_number.temperature') | float}}"
+  input_number: '{{ states('input_number.temperature') | float}}'
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
