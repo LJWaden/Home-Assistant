@@ -33,7 +33,7 @@ trigger:
 condition:
 - condition: template
   value_template: '{{energy_sensor_state < energy_sensor_avg}}'
-- condition:  
+- condition: numeric_state 
   entity_id: !input sensor_entity
     above: -20
     below: 19
