@@ -23,9 +23,9 @@ blueprint:
     input_number:
       slider1:
       name: Slider
-      initial: 20.0
-      min: -20.0
-      max: 35.0
+      initial: 20
+      min: -20
+      max: 35
       step: 1        
 
 mode: single
