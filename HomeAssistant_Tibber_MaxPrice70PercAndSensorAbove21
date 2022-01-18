@@ -11,7 +11,7 @@ blueprint:
           domain: sensor
       default: ''
     climate_entity:
-      name: Device to Turn On
+      name: Device to Turn Off
       selector:
           entity:
             domain: climate
@@ -42,6 +42,6 @@ condition:
   below: 100
 
 action:
-  - service: climate.turn_on
+  - service: climate.turn_off
     target: 
       entity_id: !input climate_entity
