@@ -1,6 +1,6 @@
 blueprint:
   name: Tibber, max price Turn Off SmartThingDevice
-  description: 'This automation blueprint turns off smarthing climate device when energy price is higher than 70 procent and temperature sensor above 20 degress.'
+  description: 'This automation blueprint turns off smarthing climate device when energy price is higher than 70 procent and temperature sensor above 21 degress.'
   domain: automation
   input:
     energy_sensor:
@@ -38,7 +38,7 @@ condition:
   value_template: '{{energy_sensor_state > 0.7 * energy_sensor_max}}'
   condition: numeric_state
   entity_id: !input temperature_sensor
-  above: 20
+  above: 21
   below: 100
 
 action:
