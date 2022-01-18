@@ -31,7 +31,10 @@ trigger:
   platform: state
   entity_id: !input 'energy_sensor'
 condition:
+alias:"Between -20 and 19 degress"
 - condition: template
+condition: and
+conditions:
   value_template: '{{energy_sensor_state < energy_sensor_avg}}'
 - condition: numeric_state 
   entity_id: !input sensor_entity
