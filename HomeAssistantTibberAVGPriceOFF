@@ -1,0 +1,34 @@
+blueprint:
+  name: Tibber normal to low prices, AVG price Turn off SmartThingDevice
+  description: 'This automation blueprint turns off smarthing climate device when energy price is normal.'
+  domain: automation
+  input:
+    energy_sensor:
+      name: Tibber price sensor
+      selector:
+        entity:
+          integration: tibber
+          domain: sensor
+      default: ''
+    climate_entity:
+      name: Device to Turn Off
+      selector:
+          entity:
+            domain: climate
+                   
+mode: single
+max_exceeded: silent
+variables:
+  energy_sensor: !input 'energy_sensor'
+  energy_sensor_state: '{{ float(states[energy_sensor].state)}}'
+  energy_sensor_avg: '{{ float(states[energy_sensor].attributes[''avg_price''])}}'
+trigger:
+  platform: state
+  entity_id: !input 'energy_sensor'
+condition:
+  condition: template
+  value_template: '{{energy_sensor_state > 0.1 + energy_sensor_avg}}'
+action:
+  - service: climate.turn_off
+    target: 
+      entity_id: !input climate_entity
