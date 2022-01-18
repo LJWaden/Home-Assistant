@@ -20,7 +20,7 @@ blueprint:
       selector:
           entity:
             domain: sensor
-        temperature_number:
+    temperature_number:
       name: Temperature Number
       selector:
           number:
@@ -37,7 +37,7 @@ variables:
   energy_sensor_avg: '{{ float(states[energy_sensor].attributes[''avg_price''])}}'
   temperature_sensor: !input 'temperature_sensor'
   temperature_sensor_temperature: '{{ float(states[temperature_sensor].state)}}'
-  
+  temperature_number: !input 'temperature_number'
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
