@@ -27,7 +27,7 @@ blueprint:
              min: -15
              max: 35
              step:1
-             unit_of_measurment: temperature
+             unit_of_measurment: sec
              mode: slider
 mode: single
 max_exceeded: silent
