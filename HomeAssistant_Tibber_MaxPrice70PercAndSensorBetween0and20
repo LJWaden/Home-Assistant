@@ -1,6 +1,6 @@
 blueprint:
   name: Tibber , max price Turn on SmartThingDevice
-  description: 'This automation blueprint turns on smarthing climate device when energy price is lower than certain procent.'
+  description: 'This automation blueprint turns off smarthing climate device when energy price is higher than 70 procent and temperature sensor between 0 and 20 degress.'
   domain: automation
   input:
     energy_sensor:
