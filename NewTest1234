@@ -21,12 +21,14 @@ blueprint:
           entity:
             domain: sensor
      input_number:
-        camera:
-         name: Camera
-         initial: 20
-         min: 20
-         max: 30
-         step: 1
+     temperature:
+      name: Temperature
+      initial: 20
+      min: 20
+      max: 30
+      step: 1
+      mode: box
+
 mode: single
 max_exceeded: silent
 variables:
@@ -35,8 +37,7 @@ variables:
   energy_sensor_max: '{{ float(states[energy_sensor].attributes[''max_price''])}}'
   temperature_sensor: !input 'temperature_sensor'
   temperature_sensor_temperature: '{{ float(states[temperature_sensor].state)}}'
-  input_number: !input 'input_number'
-  input_number: '{{ float(states[input_number.camera].state)}}'
+  input_number: '{{ states(input_number.temperature) | float}}'
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
