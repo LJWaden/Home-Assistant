@@ -20,6 +20,15 @@ blueprint:
       selector:
           entity:
             domain: sensor
+     temperature_number:
+        name: Temperature Number
+        selecter:
+           number:
+              min: -15
+              max: 35
+              step:1
+              unit_of_measurment: temperature
+              mode: slider
 mode: single
 max_exceeded: silent
 variables:
