@@ -1,5 +1,5 @@
 blueprint:
-  name: Tibber normal to low prices, AVG price Turn on SmartThingDevice
+  name: Tibber , max price Turn on SmartThingDevice
   description: 'This automation blueprint turns on smarthing climate device when energy price is normal.'
   domain: automation
   input:
@@ -28,6 +28,7 @@ variables:
   energy_sensor_state: '{{ float(states[energy_sensor].state)}}'
   energy_sensor_avg: '{{ float(states[energy_sensor].attributes[''avg_price''])}}'
   temperature_sensor: !input 'temperature_sensor'
+  temperature_sensor_temperature: '{{ float(states[temperature_sensor].state)}}'
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
