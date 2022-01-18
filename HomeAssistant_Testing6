@@ -36,6 +36,8 @@ alias:"Between -20 and 19 degress"
 - condition: template
 condition: and
 conditions:
+  condition: numeric_state
+  entity_id: energy_sensor
   value_template: '{{energy_sensor_state < energy_sensor_avg}}'
 - condition: numeric_state 
   entity_id: !input sensor_entity
