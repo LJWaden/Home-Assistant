@@ -20,14 +20,6 @@ blueprint:
       selector:
           entity:
             domain: sensor
-    input_number:
-      slider1:
-      name: Slider
-      initial: 20
-      min: -20
-      max: 35
-      step: 1        
-
 mode: single
 max_exceeded: silent
 variables:
@@ -36,7 +28,6 @@ variables:
   energy_sensor_avg: '{{ float(states[energy_sensor].attributes[''avg_price''])}}'
   temperature_sensor: !input 'temperature_sensor'
   temperature_sensor_temperature: '{{ float(states[temperature_sensor].state)}}'
-  input_number: !input 'input_number'
   
 trigger:
   platform: state
