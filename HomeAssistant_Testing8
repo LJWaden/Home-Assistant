@@ -20,13 +20,14 @@ blueprint:
         selector:
         entity:
           domain: sensor
-      default: ''
+            
 mode: single
 max_exceeded: silent
 variables:
   energy_sensor: !input 'energy_sensor'
   energy_sensor_state: '{{ float(states[energy_sensor].state)}}'
   energy_sensor_max: '{{ float(states[energy_sensor].attributes[''max_price''])}}'
+  temperature_entity: !input 'temperature_entity'
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
