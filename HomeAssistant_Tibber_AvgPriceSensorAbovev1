@@ -1,6 +1,6 @@
 blueprint:
-  name: Tibber , max price Turn off SmartThingDevice
-  description: 'This automation blueprint turns off smarthing climate device when energy price is higher than avg price per day and temperature sensor with set value.'
+  name: Tibber, avg price
+  description: 'This automation turns off a climate device if thresholds are exceeded.'
   domain: automation
   input:
     energy_sensor:
@@ -10,6 +10,8 @@ blueprint:
           integration: tibber
           domain: sensor
       default: ''
+    increase_avg_price:
+    name: Adds kronor to increase avg price form 0.3
     climate_entity:
       name: Device to Turn Off
       selector:
@@ -20,10 +22,10 @@ blueprint:
       selector:
           entity:
             domain: sensor
-    temperature_entity:
-      name: Temperature maximum
-    temperature_entitySecond:
-      name: Temperature maximum Second 
+    temperature_max_combined:
+      name: Temperature combined with price when to shut down
+    temperature_max_override:
+      name: Temperature override shut down ignores above
 
 mode: single
 max_exceeded: silent
@@ -31,12 +33,15 @@ variables:
   energy_sensor: !input 'energy_sensor'
   energy_sensor_state: '{{ float(states[energy_sensor].state)}}'
   energy_sensor_avg: '{{ float(states[energy_sensor].attributes[''avg_price''])}}'
+  increase_avg_price: !input 'increase_avg_price'
+  increase_avg_price_float: "{{ increase_avg_price | float }}"
+  
   temperature_sensor: !input 'temperature_sensor'
   temperature_sensor_state: '{{ float(states[temperature_sensor].state)}}'
-  max_temperature_entity: !input 'temperature_entity'
-  max_temperature: "{{ max_temperature_entity | float }}"
-  temperature_entitySecond: !input 'temperature_entitySecond'
-  max_temperatureOverride: "{{ temperature_entitySecond | float }}"
+  temperature_max_combined: !input 'temperature_max_combined'
+  temperature_max_combined_float: "{{ temperature_max_combined | float }}"
+  temperature_max_override: !input 'temperature_max_override'
+  temperature_max_override_float: "{{ temperature_max_override | float }}"
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
@@ -44,13 +49,13 @@ condition:
   condition: or
   conditions:
     - condition: template
-      value_template: '{{max_temperatureOverride < temperature_sensor_state}}'
+      value_template: '{{temperature_max_override_float < temperature_sensor_state}}'
     - condition: and
       conditions:
         - condition: template
-          value_template: '{{energy_sensor_state > 1.0 * energy_sensor_avg+0.3}}'
+          value_template: '{{energy_sensor_state > 1.0 * energy_sensor_avg+increase_avg_price_float}}'
         - condition: template
-          value_template: '{{max_temperature < temperature_sensor_state}}'
+          value_template: '{{temperature_max_combined_float < temperature_sensor_state}}'
   
 action:
   - service: climate.turn_off
