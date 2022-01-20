@@ -22,6 +22,8 @@ blueprint:
             domain: sensor
     temperature_entity:
       name: Temperature maximum
+    temperature_entitySecond:
+      name: Temperature maximum Second 
 
 mode: single
 max_exceeded: silent
@@ -33,15 +35,22 @@ variables:
   temperature_sensor_state: '{{ float(states[temperature_sensor].state)}}'
   max_temperature_entity: !input 'temperature_entity'
   max_temperature: "{{ max_temperature_entity | float }}"
-
+  temperature_entitySecond: !input 'temperature_entitySecond'
+  max_temperatureOverride: "{{ temperature_entitySecond | float }}"
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
 condition:
-- condition: template
-  value_template: '{{energy_sensor_state > 1.0 * energy_sensor_avg}}'
-- condition: template
-  value_template: '{{max_temperature < temperature_sensor_state}}'
+  condition: or
+  conditions:
+    - condition: template
+      value_template: '{{max_temperatureOverride < temperature_sensor_state}}'
+    - condition: and
+      conditions:
+        - condition: template
+          value_template: '{{energy_sensor_state > 1.0 * energy_sensor_avg}}'
+        - condition: template
+          value_template: '{{max_temperature < temperature_sensor_state}}'
   
 action:
   - service: climate.turn_off
