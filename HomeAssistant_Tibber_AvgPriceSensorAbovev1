@@ -1,5 +1,5 @@
 blueprint:
-  name: Tibber, avg price
+  name: Tibber, avg price turn off climate device
   description: 'This automation turns off a climate device if thresholds are exceeded.'
   domain: automation
   input:
