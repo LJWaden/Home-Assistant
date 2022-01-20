@@ -11,7 +11,7 @@ blueprint:
           domain: sensor
       default: ''
     increase_avg_price:
-    name: Adds kronor to increase avg price form 0.3
+       name: Increase avg price
     climate_entity:
       name: Device to Turn Off
       selector:
