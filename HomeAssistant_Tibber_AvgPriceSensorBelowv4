@@ -48,7 +48,7 @@ condition:
     - condition: and
       conditions:
         - condition: template
-          value_template: '{{energy_sensor_state < 1.0 * energy_sensor_avg}}'
+          value_template: '{{energy_sensor_state < 1.0 * energy_sensor_avg+0.3}}'
         - condition: template
           value_template: '{{max_temperature > temperature_sensor_state}}'
   
