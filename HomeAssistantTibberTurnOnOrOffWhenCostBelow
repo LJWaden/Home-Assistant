@@ -1,6 +1,6 @@
 blueprint:
   name: Tibber normal to low prices, AVG price Turn off SmartThingDevice
-  description: 'This automation blueprint turns off smarthing climate device when energy price is normal.'
+  description: 'This automation BluePrint turns on or off a switch if price is above or below set cost value.'
   domain: automation
   input:
     energy_sensor:
@@ -10,25 +10,45 @@ blueprint:
           integration: tibber
           domain: sensor
       default: ''
-    climate_entity:
-      name: Device to Turn Off
+    switch_entity:
+      name: Device to Turn OnOff
       selector:
           entity:
-            domain: climate
-                   
+            domain: switch
+    cost_below:
+      name: Cost Below
 mode: single
 max_exceeded: silent
 variables:
   energy_sensor: !input 'energy_sensor'
   energy_sensor_state: '{{ float(states[energy_sensor].state)}}'
   energy_sensor_avg: '{{ float(states[energy_sensor].attributes[''avg_price''])}}'
+  cost_below: !input 'cost_below'
+  cost_below_float: '{{ float(states[cost_below].state)}}'
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
-condition:
-  condition: template
-  value_template: '{{energy_sensor_state > energy_sensor_avg}}'
+
 action:
-  - service: climate.turn_off
-    target: 
-      entity_id: !input climate_entity
+  - choose:
+  # IF PriceAboveInputValue
+    - conditions:
+       - condition: template
+          value_template: "{{ cost_below_float < energy_sensor_state }}"
+            sequence:
+              - service: switch.turn_on
+                target:
+                  entity_id: !input switch_entity
+          # ELIF PriceBelowInputValue
+          - conditions:
+              - condition: template
+                value_template: "{{ cost_below_float > energy_sensor_state }}"
+            sequence:
+              - service: switch.turn_on
+                target:
+                  entity_id: !input switch_entity
+        # ELSE night
+          default:
+            - service: switch.turn_off
+              target:
+                entity_id: entity_id: !input switch_entity       
