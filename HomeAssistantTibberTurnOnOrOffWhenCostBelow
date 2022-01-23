@@ -1,5 +1,5 @@
 blueprint:
-  name: Tibber normal to low prices, AVG price Turn off SmartThingDevice
+  name: Tibber below input value turn on or off switch
   description: 'This automation BluePrint turns on or off a switch if price is above or below set cost value.'
   domain: automation
   input:
