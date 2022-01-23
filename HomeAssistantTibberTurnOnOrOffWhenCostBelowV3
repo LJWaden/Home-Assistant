@@ -30,21 +30,17 @@ trigger:
   entity_id: !input 'energy_sensor'
 
 action:
+  - alias: "Turn on switch if price above or below cost Threshold."
   - choose:
-  # IF PriceBelowInputValue
-    - conditions: "{{ cost_below_float < energy_sensor_state }}"
-            sequence:
-              - service: switch.turn_off
-                target:
-                  entity_id: !input switch_entity
-          # ELIF PriceBelowInputValue
-          - conditions: {{ cost_below_float > energy_sensor_state }}
-            sequence:
-              - service: switch.turn_on
-                target:
-                  entity_id: !input switch_entity
-        # ELSE night
-          default:
-            - service: switch.turn_off
-              target:
-                entity_id: entity_id: !input switch_entity
+    # IF PriceBelowInputValue
+    - alias: "Turn on switch if price below cost Threshold."
+    - conditions: "{{ cost_below_float > energy_sensor_state }}"
+      sequence:
+        - service: switch.turn_on
+          target:
+          entity_id: !input switch_entity
+    # ELSE Turn Off
+    default:
+      - service: switch.turn_off
+        target:
+        entity_id: entity_id: !input switch_entity
