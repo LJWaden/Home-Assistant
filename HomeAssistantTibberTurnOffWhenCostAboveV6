@@ -10,8 +10,8 @@ blueprint:
           integration: tibber
           domain: sensor
       default: ''
-    cost_below:
-      name: Cost Below
+    cost_above:
+      name: Cost Above
     switch_entity:
       name: Switch to Turn Off
       selector:
@@ -22,14 +22,14 @@ max_exceeded: silent
 variables:
   energy_sensor: !input 'energy_sensor'
   energy_sensor_state: '{{ float(states[energy_sensor].state)}}'
-  cost_below: !input 'cost_below'
-  cost_below_float: "{{ cost_below | float }}"
+  cost_above: !input 'cost_above'
+  cost_above_float: "{{ cost_above | float }}"
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
 condition:
   condition: template
-  value_template: '{{energy_sensor_state > cost_below_float}}'
+  value_template: '{{energy_sensor_state > cost_above_float}}'
 action:
   - service: switch.turn_off
     target: 
