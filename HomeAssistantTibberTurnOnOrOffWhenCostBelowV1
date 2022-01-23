@@ -32,17 +32,15 @@ trigger:
 action:
   - choose:
   # IF PriceAboveInputValue
-    - conditions:
-       - condition: template
-          value_template: "{{ cost_below_float < energy_sensor_state }}"
+    - conditions: >
+        {{ cost_below_float < energy_sensor_state }}
             sequence:
-              - service: switch.turn_on
+              - service: switch.turn_off
                 target:
                   entity_id: !input switch_entity
           # ELIF PriceBelowInputValue
-          - conditions:
-              - condition: template
-                value_template: "{{ cost_below_float > energy_sensor_state }}"
+          - conditions: >
+              {{ cost_below_float > energy_sensor_state }}
             sequence:
               - service: switch.turn_on
                 target:
@@ -51,4 +49,4 @@ action:
           default:
             - service: switch.turn_off
               target:
-                entity_id: entity_id: !input switch_entity       
+                entity_id: entity_id: !input switch_entity
