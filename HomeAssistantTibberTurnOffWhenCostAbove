@@ -1,5 +1,5 @@
 blueprint:
-  name: Tibber below input value turn on or off switch
+  name: Tibber below input value turn On switch
   description: 'This automation BluePrint turns on or off a switch if price is above or below set cost value.'
   domain: automation
   input:
@@ -12,7 +12,11 @@ blueprint:
       default: ''
     cost_below:
       name: Cost Below
-
+    switch_entity:
+      name: Switch to Turn Off
+      selector:
+          entity:
+            domain: switch
 max_exceeded: silent
 variables:
   energy_sensor: !input 'energy_sensor'
@@ -23,17 +27,10 @@ variables:
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
-mode: single
+condition:
+  condition: template
+  value_template: '{{energy_sensor_state > cost_below_float}}'
 action:
-  - choose:
-    # IF PriceBelowInputValue
-    - conditions: "{{ cost_below_float > energy_sensor_state }}"
-      sequence:
-        - service: switch.turn_on
-          target:
-            entity_id: switch.element_forradet
-    # ELSE Turn Off
-    default:
-      - service: switch.turn_off
-        target:
-          entity_id: switch.element_forradet
+  - service: switch.turn_off
+    target: 
+      entity_id: !input climate_entity
