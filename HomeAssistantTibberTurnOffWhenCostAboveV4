@@ -22,7 +22,6 @@ max_exceeded: silent
 variables:
   energy_sensor: !input 'energy_sensor'
   energy_sensor_state: '{{ float(states[energy_sensor].state)}}'
-  energy_sensor_avg: '{{ float(states[energy_sensor].attributes[''avg_price''])}}'
   cost_below: !input 'cost_below'
   cost_below_float: '{{ float(states[cost_below].state)}}'
 trigger:
