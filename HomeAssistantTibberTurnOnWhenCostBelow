@@ -1,0 +1,37 @@
+blueprint:
+  name: Tibber below input value turn On switch
+  description: 'This automation BluePrint turns on a switch if price is below set cost value.'
+  domain: automation
+  input:
+    energy_sensor:
+      name: Tibber price sensor
+      selector:
+        entity:
+          integration: tibber
+          domain: sensor
+      default: ''
+    cost_below:
+      name: Cost Below
+    switch_entity:
+      name: Switch to Turn On
+      selector:
+          entity:
+            domain: switch
+mode: single
+max_exceeded: silent
+variables:
+  energy_sensor: !input 'energy_sensor'
+  energy_sensor_state: '{{ float(states[energy_sensor].state)}}'
+  energy_sensor_avg: '{{ float(states[energy_sensor].attributes[''avg_price''])}}'
+  cost_below: !input 'cost_below'
+  cost_below_float: '{{ float(states[cost_below].state)}}'
+trigger:
+  platform: state
+  entity_id: !input 'energy_sensor'
+condition:
+  condition: template
+  value_template: '{{energy_sensor_state < cost_below_float}}'
+action:
+  - service: switch.turn_on
+    target: 
+      entity_id: !input switch_entity
