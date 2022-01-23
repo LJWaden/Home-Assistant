@@ -33,4 +33,4 @@ condition:
 action:
   - service: switch.turn_off
     target: 
-      entity_id: !input climate_entity
+      entity_id: !input switch_entity
