@@ -17,7 +17,7 @@ blueprint:
             domain: switch
     cost_below:
       name: Cost Below
-mode: single
+
 max_exceeded: silent
 variables:
   energy_sensor: !input 'energy_sensor'
@@ -29,7 +29,7 @@ variables:
 trigger:
   platform: state
   entity_id: !input 'energy_sensor'
-
+mode: single
 action:
   - choose:
     # IF PriceBelowInputValue
