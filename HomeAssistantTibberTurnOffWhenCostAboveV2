@@ -1,6 +1,6 @@
 blueprint:
-  name: Tibber below input value turn On switch
-  description: 'This automation BluePrint turns on or off a switch if price is above or below set cost value.'
+  name: Tibber below input value turn Off switch
+  description: 'This automation BluePrint turns off a switch if price is above set cost value.'
   domain: automation
   input:
     energy_sensor:
