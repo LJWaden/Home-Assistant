@@ -17,6 +17,7 @@ blueprint:
       selector:
           entity:
             domain: switch
+mode: single
 max_exceeded: silent
 variables:
   energy_sensor: !input 'energy_sensor'
